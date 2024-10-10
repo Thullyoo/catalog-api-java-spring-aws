@@ -22,6 +22,10 @@ public class Category {
     @Column(nullable = false)
     private Long id;
 
+
+    @Column(nullable = false)
+    private String name;
+
     @Column(nullable = false)
     private String description;
 
@@ -30,5 +34,6 @@ public class Category {
 
     public Category(CategoryDTO dto){
         this.description = dto.description();
+        this.name = dto.name();
     }
 }
