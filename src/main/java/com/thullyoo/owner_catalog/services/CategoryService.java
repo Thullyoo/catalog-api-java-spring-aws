@@ -6,7 +6,6 @@ import com.thullyoo.owner_catalog.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +33,7 @@ public class CategoryService {
 
     public Category update(Long id, CategoryDTO dto){
 
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        Optional<Category> optionalCategory = findById(id);
 
         if (optionalCategory.isEmpty()){
             throw new RuntimeException("Categoria não encontrada");
@@ -48,7 +47,7 @@ public class CategoryService {
 
     public void delete(Long id){
 
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
+        Optional<Category> optionalCategory = findById(id);
 
         if (optionalCategory.isEmpty()){
             throw new RuntimeException("Categoria não encontrada");
@@ -57,5 +56,7 @@ public class CategoryService {
         categoryRepository.delete(optionalCategory.get());
     }
 
-
+    public Optional<Category> findById(Long id){
+        return categoryRepository.findById(id);
+    }
 }

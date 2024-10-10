@@ -1,7 +1,6 @@
 package com.thullyoo.owner_catalog.domain.product;
 
 import com.thullyoo.owner_catalog.domain.category.Category;
-import com.thullyoo.owner_catalog.domain.owner.Owner;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,9 +26,7 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "id_owner")
-    private Owner owner;
+    private String ownerId;
 
     @ManyToOne
     @JoinColumn(name = "id_category")
