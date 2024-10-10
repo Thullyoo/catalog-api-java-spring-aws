@@ -3,9 +3,17 @@ package com.thullyoo.owner_catalog.domain.product;
 import com.thullyoo.owner_catalog.domain.category.Category;
 import com.thullyoo.owner_catalog.domain.owner.Owner;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "TB_PRODUCT")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     @Id
@@ -26,4 +34,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
+
+    public Product(ProductDTO dto){
+        this.name = dto.name();
+        this.price = dto.price();
+    }
 }

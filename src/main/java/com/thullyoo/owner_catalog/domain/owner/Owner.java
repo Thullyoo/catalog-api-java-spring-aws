@@ -3,7 +3,9 @@ package com.thullyoo.owner_catalog.domain.owner;
 import com.thullyoo.owner_catalog.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "TB_OWNER")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Owner{
@@ -33,4 +37,9 @@ public class Owner{
     @OneToMany(mappedBy = "owner")
     private List<Product> products;
 
+    public Owner(OwnerDTO dto) {
+        this.name = dto.name();
+        this.email = dto.email();
+        this.document = dto.document();
+    }
 }
