@@ -26,7 +26,10 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
     private String ownerId;
+
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "id_category")
@@ -35,5 +38,7 @@ public class Product {
     public Product(ProductDTO dto){
         this.name = dto.name();
         this.price = dto.price();
+        this.description = dto.description();
+        this.ownerId = dto.ownerId();
     }
 }
