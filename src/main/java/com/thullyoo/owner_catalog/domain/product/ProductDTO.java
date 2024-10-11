@@ -1,4 +1,4 @@
 package com.thullyoo.owner_catalog.domain.product;
 
-public record ProductDTO(String name, Double price, Long categoryId) {
+public record ProductDTO(String name, Double price, Long categoryId,String description, String ownerId) {
 }
