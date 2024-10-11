@@ -1,5 +1,6 @@
 package com.thullyoo.owner_catalog.domain.category;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thullyoo.owner_catalog.domain.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,11 +30,16 @@ public class Category {
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "category")
+    @Column(nullable = false)
+    private String ownerId;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Product> products;
 
     public Category(CategoryDTO dto){
         this.description = dto.description();
         this.name = dto.name();
+        this.ownerId = dto.ownerId();
     }
 }
