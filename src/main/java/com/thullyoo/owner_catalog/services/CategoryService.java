@@ -17,7 +17,7 @@ public class CategoryService {
 
     public Category register(CategoryDTO dto){
 
-        if (dto.description() != null){
+        if (dto.description() == null){
             throw new RuntimeException("Descrição não pode ser null");
         }
 
@@ -39,7 +39,14 @@ public class CategoryService {
             throw new RuntimeException("Categoria não encontrada");
         }
 
-        optionalCategory.get().setDescription(dto.description());
+        if(dto.description() != ""){
+            optionalCategory.get().setDescription(dto.description());
+        }
+
+        if(dto.name() != ""){
+            optionalCategory.get().setName(dto.name());
+        }
+
         categoryRepository.save(optionalCategory.get());
 
         return optionalCategory.get();

@@ -28,6 +28,12 @@ public class ProductService {
             throw new RuntimeException("Categoria não encontrada");
         }
 
+        if (!category.get().getOwnerId().equals(dto.ownerId())) {
+            System.out.println(category.get().getOwnerId());
+            System.out.println(dto.ownerId());
+            throw new RuntimeException("Categoria e Produto de diferentes Proprietários");
+        }
+
         product.setCategory(category.get());
 
         productRepository.save(product);
@@ -46,11 +52,14 @@ public class ProductService {
         if (product.isEmpty()){
             throw new RuntimeException("Produto não cadastrado");
         }
-        if(!dto.name().isEmpty()){
+        if(dto.name() != "") {
             product.get().setName(dto.name());
         }
-        if(dto.price() != null){
+        if(dto.price() != -1){
             product.get().setPrice(dto.price());
+        }
+        if (dto.description() != ""){
+            product.get().setDescription(dto.description());
         }
         if(dto.categoryId() != null){
             Optional<Category> category = categoryService.findById(dto.categoryId());
