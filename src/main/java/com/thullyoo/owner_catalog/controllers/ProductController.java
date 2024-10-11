@@ -6,8 +6,10 @@ import com.thullyoo.owner_catalog.domain.product.ProductDTO;
 import com.thullyoo.owner_catalog.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,9 +20,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping
-    public ResponseEntity<Product> register(@RequestBody ProductDTO dto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.register(dto));
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public ResponseEntity<Product> register(@RequestParam("name") String name,
+                                            @RequestParam("price") double price,
+                                            @RequestParam("description") String description,
+                                            @RequestParam("categoryId") Long categoryId,
+                                            @RequestParam("ownerId") String ownerId,
+                                            @RequestParam("image") MultipartFile image){
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.register(new ProductDTO(name,price,categoryId,description,ownerId), image));
     }
 
     @GetMapping

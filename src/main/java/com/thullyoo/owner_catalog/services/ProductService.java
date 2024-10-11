@@ -4,8 +4,11 @@ import com.thullyoo.owner_catalog.domain.category.Category;
 import com.thullyoo.owner_catalog.domain.product.Product;
 import com.thullyoo.owner_catalog.domain.product.ProductDTO;
 import com.thullyoo.owner_catalog.repository.ProductRepository;
+import com.thullyoo.owner_catalog.services.aws.S3UploadImage;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +22,11 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
-    public Product register(ProductDTO dto){
+    @Autowired
+    private S3UploadImage s3UploadImage;
+
+    @Transactional
+    public Product register(ProductDTO dto, MultipartFile image){
         Product product = new Product(dto);
 
         Optional<Category> category = categoryService.findById(dto.categoryId());
@@ -36,7 +43,11 @@ public class ProductService {
 
         product.setCategory(category.get());
 
-        productRepository.save(product);
+        Product productSave =  productRepository.save(product);
+
+        s3UploadImage.uploadImage(image, dto.ownerId(), productSave.getId());
+
+        productRepository.save(productSave);
 
         return product;
     }
