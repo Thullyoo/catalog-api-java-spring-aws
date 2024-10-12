@@ -4,7 +4,9 @@ import com.thullyoo.owner_catalog.domain.category.Category;
 import com.thullyoo.owner_catalog.domain.product.Product;
 import com.thullyoo.owner_catalog.domain.product.ProductDTO;
 import com.thullyoo.owner_catalog.repository.ProductRepository;
+import com.thullyoo.owner_catalog.services.aws.MessageDTO;
 import com.thullyoo.owner_catalog.services.aws.S3UploadImage;
+import com.thullyoo.owner_catalog.services.aws.SNSService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class ProductService {
 
     @Autowired
     private S3UploadImage s3UploadImage;
+
+    @Autowired
+    private SNSService snsService;
 
     @Transactional
     public Product register(ProductDTO dto, MultipartFile image){
@@ -45,9 +50,17 @@ public class ProductService {
 
         Product productSave =  productRepository.save(product);
 
-        s3UploadImage.uploadImage(image, dto.ownerId(), productSave.getId());
+        String imgUrl = s3UploadImage.uploadImage(image, dto.ownerId(), productSave.getId());
+
+        if (imgUrl.isEmpty()){
+            throw new RuntimeException("Erro ao carregar imagem");
+        }
+
+        productSave.setImgUrl(imgUrl);
 
         productRepository.save(productSave);
+
+        snsService.publish(new MessageDTO(productSave.toString()));
 
         return product;
     }
