@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "TB_PRODUCT")
@@ -26,6 +27,8 @@ public class Product {
     @Column(nullable = false)
     private Double price;
 
+    private String imgUrl;
+
     @Column(nullable = false)
     private String ownerId;
 
@@ -40,5 +43,18 @@ public class Product {
         this.price = dto.price();
         this.description = dto.description();
         this.ownerId = dto.ownerId();
+    }
+
+    @Override
+    public String toString() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("name", name);
+        json.put("price", price);
+        json.put("imgUrl", imgUrl);
+        json.put("ownerId", ownerId);
+        json.put("description", description);
+        json.put("category", category);
+        return json.toString();
     }
 }

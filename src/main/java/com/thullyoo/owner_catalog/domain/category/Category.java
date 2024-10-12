@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -41,5 +42,15 @@ public class Category {
         this.description = dto.description();
         this.name = dto.name();
         this.ownerId = dto.ownerId();
+    }
+
+    @Override
+    public String toString() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("name", name);
+        json.put("description", description);
+        json.put("ownerId", ownerId);
+        return json.toString();
     }
 }
