@@ -4,6 +4,7 @@ package com.thullyoo.owner_catalog.controllers;
 import com.thullyoo.owner_catalog.domain.product.Product;
 import com.thullyoo.owner_catalog.domain.product.ProductDTO;
 import com.thullyoo.owner_catalog.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,7 +37,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable("id") Long id, @RequestBody ProductDTO dto){
+    public ResponseEntity<Product> update(@PathVariable("id") Long id, @RequestBody @Valid ProductDTO dto){
         return ResponseEntity.status(HttpStatus.OK).body(productService.update(id, dto));
     }
 

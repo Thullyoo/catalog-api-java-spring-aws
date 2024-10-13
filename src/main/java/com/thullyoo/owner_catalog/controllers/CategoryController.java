@@ -3,6 +3,7 @@ package com.thullyoo.owner_catalog.controllers;
 import com.thullyoo.owner_catalog.domain.category.Category;
 import com.thullyoo.owner_catalog.domain.category.CategoryDTO;
 import com.thullyoo.owner_catalog.services.CategoryService;
+import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<Category> register(@RequestBody CategoryDTO dto){
+    public ResponseEntity<Category> register(@RequestBody @Valid CategoryDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.register(dto));
     }
 
@@ -29,7 +30,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathVariable("id") Long id, @RequestBody CategoryDTO dto){
+    public ResponseEntity<Category> update(@PathVariable("id") Long id, @RequestBody @Valid CategoryDTO dto){
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.update(id, dto));
     }
 
