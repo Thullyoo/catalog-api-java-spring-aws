@@ -1,4 +1,9 @@
 package com.thullyoo.owner_catalog.domain.product;
 
-public record ProductDTO(String name, Double price, Long categoryId,String description, String ownerId) {
+import jakarta.validation.constraints.NotNull;
+
+public record ProductDTO(@NotNull(message = "A descrição é obrigatório") String name,
+                         @NotNull(message = "A descrição é obrigatório")Double price,
+                         @NotNull(message = "A descrição é obrigatório")Long categoryId,
+                         @NotNull(message = "A descrição é obrigatório")String description, String ownerId) {
 }

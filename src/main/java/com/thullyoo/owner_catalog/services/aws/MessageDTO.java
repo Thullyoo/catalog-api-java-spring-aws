@@ -1,4 +1,6 @@
 package com.thullyoo.owner_catalog.services.aws;
 
-public record MessageDTO(String message) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record MessageDTO(@NotEmpty(message = "A messagem é obrigatória") String message) {
 }
