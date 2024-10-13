@@ -3,6 +3,10 @@ package com.thullyoo.owner_catalog.services;
 import com.thullyoo.owner_catalog.domain.category.Category;
 import com.thullyoo.owner_catalog.domain.product.Product;
 import com.thullyoo.owner_catalog.domain.product.ProductDTO;
+import com.thullyoo.owner_catalog.exceptions.CategoryNotExistsException;
+import com.thullyoo.owner_catalog.exceptions.CategoryProductOwnerDiffException;
+import com.thullyoo.owner_catalog.exceptions.ProductNotExistsException;
+import com.thullyoo.owner_catalog.exceptions.UploadImageException;
 import com.thullyoo.owner_catalog.repository.ProductRepository;
 import com.thullyoo.owner_catalog.services.aws.MessageDTO;
 import com.thullyoo.owner_catalog.services.aws.S3UploadImage;
@@ -37,13 +41,13 @@ public class ProductService {
         Optional<Category> category = categoryService.findById(dto.categoryId());
 
         if (category.isEmpty()){
-            throw new RuntimeException("Categoria não encontrada");
+            throw new CategoryNotExistsException("Categoria não encontrada");
         }
 
         if (!category.get().getOwnerId().equals(dto.ownerId())) {
             System.out.println(category.get().getOwnerId());
             System.out.println(dto.ownerId());
-            throw new RuntimeException("Categoria e Produto de diferentes Proprietários");
+            throw new CategoryProductOwnerDiffException("Categoria e Produto de diferentes Proprietários");
         }
 
         product.setCategory(category.get());
@@ -53,7 +57,7 @@ public class ProductService {
         String imgUrl = s3UploadImage.uploadImage(image, dto.ownerId(), productSave.getId());
 
         if (imgUrl.isEmpty()){
-            throw new RuntimeException("Erro ao carregar imagem");
+            throw new UploadImageException("Erro ao carregar imagem");
         }
 
         productSave.setImgUrl(imgUrl);
@@ -74,7 +78,7 @@ public class ProductService {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isEmpty()){
-            throw new RuntimeException("Produto não cadastrado");
+            throw new ProductNotExistsException("Produto não cadastrado");
         }
         if(dto.name() != "") {
             product.get().setName(dto.name());
@@ -89,7 +93,7 @@ public class ProductService {
             Optional<Category> category = categoryService.findById(dto.categoryId());
 
             if (category.isEmpty()){
-                throw new RuntimeException("Categoria não encontrada");
+                throw new CategoryNotExistsException("Categoria não encontrada");
             }
 
             product.get().setCategory(category.get());
@@ -104,7 +108,7 @@ public class ProductService {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isEmpty()){
-            throw new RuntimeException("Produto não cadastrado");
+            throw new ProductNotExistsException("Produto não cadastrado");
         }
 
         productRepository.delete(product.get());

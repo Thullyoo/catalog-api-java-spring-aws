@@ -2,6 +2,7 @@ package com.thullyoo.owner_catalog.services;
 
 import com.thullyoo.owner_catalog.domain.category.Category;
 import com.thullyoo.owner_catalog.domain.category.CategoryDTO;
+import com.thullyoo.owner_catalog.exceptions.CategoryNotExistsException;
 import com.thullyoo.owner_catalog.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,6 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public Category register(CategoryDTO dto){
-
-        if (dto.description() == null){
-            throw new RuntimeException("Descrição não pode ser null");
-        }
 
         Category category = new Category(dto);
         categoryRepository.save(category);
@@ -36,7 +33,7 @@ public class CategoryService {
         Optional<Category> optionalCategory = findById(id);
 
         if (optionalCategory.isEmpty()){
-            throw new RuntimeException("Categoria não encontrada");
+            throw new CategoryNotExistsException("Categoria não encontrada");
         }
 
         if(dto.description() != ""){
@@ -57,7 +54,7 @@ public class CategoryService {
         Optional<Category> optionalCategory = findById(id);
 
         if (optionalCategory.isEmpty()){
-            throw new RuntimeException("Categoria não encontrada");
+            throw new CategoryNotExistsException("Categoria não encontrada");
         }
 
         categoryRepository.delete(optionalCategory.get());

@@ -1,5 +1,6 @@
 package com.thullyoo.owner_catalog.services.aws;
 
+import com.thullyoo.owner_catalog.exceptions.UploadImageException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,7 +45,7 @@ public class S3UploadImage {
 
         }catch (Exception e){
             System.out.println("Erro durante o upload do arquivo");
-            throw new RuntimeException(e.getMessage());
+            throw new UploadImageException(e.getMessage());
         }
 
     }
