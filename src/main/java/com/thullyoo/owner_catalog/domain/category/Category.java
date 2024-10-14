@@ -51,6 +51,17 @@ public class Category {
         json.put("name", name);
         json.put("description", description);
         json.put("ownerId", ownerId);
+        json.put("type", "category");
+        return json.toString();
+    }
+
+    public String deleteToString() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("name", name);
+        json.put("description", description);
+        json.put("ownerId", ownerId);
+        json.put("type", "delete-c");
         return json.toString();
     }
 }
