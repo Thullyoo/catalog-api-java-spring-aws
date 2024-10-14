@@ -54,7 +54,7 @@ public class Product {
         json.put("imgUrl", imgUrl);
         json.put("ownerId", ownerId);
         json.put("description", description);
-        json.put("category", category);
+        json.put("category", category.getId());
         json.put("type", "product");
         return json.toString();
     }
@@ -67,7 +67,7 @@ public class Product {
         json.put("imgUrl", imgUrl);
         json.put("ownerId", ownerId);
         json.put("description", description);
-        json.put("category", category);
+        json.put("category", category.getId());
         json.put("type", "delete-p");
         return json.toString();
     }
