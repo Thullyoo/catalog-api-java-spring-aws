@@ -36,6 +36,7 @@ public class ProductService {
 
     @Transactional
     public Product register(ProductDTO dto, MultipartFile image){
+
         Product product = new Product(dto);
 
         Optional<Category> category = categoryService.findById(dto.categoryId());
@@ -101,6 +102,8 @@ public class ProductService {
 
         productRepository.save(product.get());
 
+        snsService.publish(new MessageDTO(product.toString()));
+
         return product.get();
     }
 
@@ -112,5 +115,7 @@ public class ProductService {
         }
 
         productRepository.delete(product.get());
+
+        this.snsService.publish(new MessageDTO(product.get().deleteToString()));
     }
 }
