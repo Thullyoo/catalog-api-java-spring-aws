@@ -53,7 +53,9 @@ Este é um projeto de **API REST** para um sistema de criação Produtos e Categ
     aws.bucket.name=
     aws.topic.arn=
 
-4. Execute a aplicação:
+4. Após criar os dois S3 um para o armazenamento do catálogo e outro para o armazenamento das imagens dos produtos, a assinatura do SNS com o SQS e criar o trigger do lambda no SQS, cole o código do lambdacode.mjs no codigo do lambda
+
+5. Execute a aplicação:
 
       ```bash
    mvn spring-boot:run
