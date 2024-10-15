@@ -19,17 +19,17 @@ export const handler = async (event) => {
         const catalog = await getS3Object(bucketName, filename);
         const catalogData = JSON.parse(catalog)
       
-        if(body.type == 'produto'){updateOrAddItem(catalogData.products, body)}
-        if(body.type == 'categoria'){updateOrAddItem(catalogData.categories, body)}
-        if(body.type == 'delete-produto'){deleteS3Item(catalogData.products, body)}
-        if(body.type == 'delete-categoria'){deleteS3Item(catalogData.categories, body)}
+        if(body.type == 'product'){updateOrAddItem(catalogData.products, body)}
+        if(body.type == 'category'){updateOrAddItem(catalogData.categories, body)}
+        if(body.type == 'delete-p'){deleteS3Item(catalogData.products, body)}
+        if(body.type == 'delete-c'){deleteS3Item(catalogData.categories, body)}
         
         await putS3Object(bucketName, filename, JSON.stringify(catalogData));
       
       } catch (error) {
         if(error.message == "Error getting object from bucket") {
           const newCatalog = { products: [], categories: [] }
-          if(body.type == "produto") {
+          if(body.type == "product") {
             newCatalog.products.push(body);
           } else {
             newCatalog.categories.push(body);
