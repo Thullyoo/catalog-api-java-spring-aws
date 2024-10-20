@@ -57,15 +57,16 @@ public class ProductService {
 
         String imgUrl = s3UploadImage.uploadImage(image, dto.ownerId(), productSave.getId());
 
-        if (imgUrl.isEmpty()){
-            throw new UploadImageException("Erro ao carregar imagem");
+        if (!imgUrl.isEmpty()){
+            productSave.setImgUrl(imgUrl);
+            snsService.publish(new MessageDTO(productSave.toString()));
+        } else {
+            productSave.setImgUrl(null);
         }
-
-        productSave.setImgUrl(imgUrl);
 
         productRepository.save(productSave);
 
-        snsService.publish(new MessageDTO(productSave.toString()));
+
 
         return product;
     }
